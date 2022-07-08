@@ -33,6 +33,5 @@ Route::post('landing_page',[MemberController::class, 'store'])->name('landing_pa
 Route::middleware(['auth'])->group(function() {
     Route::get('dashboard', [DashboardController::class,'index'])->name('dashboard');
     Route::post('sales/delete-all', [SalesController::class, 'destroyAll'])->name('sales.delete-all');
-    Route::put('sales/update/{id}', [SalesController::class, 'update'])->name('sales.update');
     Route::resource('sales', SalesController::class);
 });

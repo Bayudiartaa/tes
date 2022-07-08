@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\ValidationException;
 
-class SalesRequest extends FormRequest
+class UpdateSalesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,19 +27,12 @@ class SalesRequest extends FormRequest
         return [
             'nis' => 'nullable',
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|string|email|unique:users,email',
-            'tanggal_lahir' =>'required',
+            'username' => 'required|string|max:255',Rule::unique('users', 'username')->ignore($this->id),
+            'email' => 'required|string|email',Rule::unique('users', 'email')->ignore($this->id),
+            'tanggal_lahir' => 'required',
             'umur' => 'required|numeric',
-            'alamat' =>'required',
+            'alamat' => 'required',
             'password' => 'nullable',
-            
         ]; 
-    }
-
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    {
-        $response = new Response(['error' => $validator->errors()->all()]);
-        throw new ValidationException($validator, $response);
     }
 }

@@ -24,16 +24,12 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => 'required',
             'nama' => 'required|string|max:255',
-            'username' =>  'required|string|max:255|unique:members',
+            'username' =>  'required|string|max:255',
             'email' => 'required|string|max:255|unique:members|email',
             'no_telepon' => 'required|numeric|min:11',
             'user_id' => 'required',
         ];
     }
-
-    // public function failedValidation(Validator $validator)
-    // {
-    //     throw new HttpResponseException(Response::status('failed')->message('Terjadi Kesalahan Input')->result($validator->errors()));
-    // }
 }

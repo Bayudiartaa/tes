@@ -5,102 +5,57 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <form id="form-edit">
+                <form action="{{ route('sales.update', $sales->id) }}" method="POST">
                     @csrf
-                    <div class="alert alert-danger print-error-msg" style="display:none">
-                        <ul></ul>
+                    @method('PATCH')
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <input type="hidden" name="id" id="id" value="{{ $user->id }}">
+                    @endif
                     <div class="form-group">
                         <label>NIS</label>
-                        <input type="text" class="form-control" name="nis" id="nis" value="{{ $user->nis }}" readonly>
+                        <input type="text" class="form-control" name="nis" id="nis" value="{{ $sales->nis }}" readonly>
                     </div>
                     <div class="form-group">
                         <label>Nama Sales</label>
-                        <input type="text" class="form-control" name="nama" id="nama" value="{{ old('nama',$user->nama) }}">
+                        <input type="text" class="form-control" name="nama" id="nama" value="{{ old('nama',$sales->nama) }}">
                     </div>
                     <div class="form-group">
                         <label>Username Sales</label>
-                        <input type="text" class="form-control" name="username" id="username" value="{{ old('username', $user->username) }}">
+                        <input type="text" class="form-control" name="username" id="username" value="{{ old('username', $sales->username) }}">
                     </div>
                     <div class="form-group">
                         <label>Umur Sales</label>
-                        <input type="number" class="form-control" name="umur" id="umur" value="{{ old('umur', $user->umur) }}">
+                        <input type="number" class="form-control" name="umur" id="umur" value="{{ old('umur', $sales->umur) }}">
                     </div>
                     <div class="form-group">
                         <label>Tanggal Lahir Sales</label>
-                        <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir"  value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}">
+                        <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir"  value="{{ old('tanggal_lahir', $sales->tanggal_lahir) }}">
                     </div>
                     <div class="form-group">
                         <label>Alamat Sales</label>
-                        <textarea id="alamat" name ="alamat" rows="10" cols="50" style="height:150px" class="form-control">
-                            {{ old('alamat', $user->alamat) }}
-                        </textarea>
+                        <textarea id="alamat" name ="alamat" rows="10" cols="50" style="height:150px" class="form-control">{{ old('alamat', $sales->alamat) }}</textarea>
                     </div>
                     <div class="form-group">
                         <label>Email Sales</label>
-                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email', $user->email) }}">
+                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email', $sales->email) }}">
                     </div>
                     <div class="form-group">
                         <label>Password Sales</label>
-                        <input type="password" class="form-control" name="password" id="password" value="{{ $user->password }}" readonly>
+                        <input type="password" class="form-control" name="password" id="password" value="{{ $sales->password }}" readonly>
                     </div>
                     <div class="float-right">
-                        <button type="button" class="btn btn-secondary" onclick="document.location.href='{{ route('sales.index') }}'">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Store</button>
+                        <a href="{{ route('sales.index') }}" class="btn btn-danger">Back</a>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
-                </form>
+                </form> 
             </div>
         </div>
     </div>
 </div>
-@endsection
-
-@section('script')
-<script type="text/javascript">
-    $(document).ready(function() {
-    // Update Data
-        $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('#form-edit').on('submit', function(e){
-            e.preventDefault();
-
-            var id = $('#id').val();
-
-            if (id < 1) {
-                alert("Error: user id is null! make sure it has a value from the {{ $user->id }}");
-                return;
-            }
-
-            $.ajax({
-                type: "PUT",
-                url: "/sales/update/" + id,
-                dataType: $('#form-edit').serialize(),
-                success: function (data) {
-                    if($.isEmptyObject(data.error)) {
-                        toastr.success('Data Sales Berhasil Di Tambahkan'),(data.success);
-                        setTimeout(function() {
-                            document.location.href='{{ route('sales.index') }}'
-                        },3000);
-                    }else{
-                        printErrorMsg(data.error);
-                    }
-                }
-            });
-        });
-
-        function printErrorMsg (msg) {
-            $(".print-error-msg").find("ul").html('');
-            $(".print-error-msg").css('display','block');
-            $.each( msg, function( key, value ) {
-                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-            });
-        }
-
-    });
-</script>
 @endsection

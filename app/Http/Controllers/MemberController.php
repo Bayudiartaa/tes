@@ -20,13 +20,12 @@ class MemberController extends Controller
     public function store(MemberRequest $request)
     {
         $attributes = $request->validated();
-        $user = User::whereId($request->id)->first();
         $data = [
             'nama'        => $attributes['nama'],
             'username'    => $attributes['username'],
             'email'       => $attributes['email'],
             'no_telepon'  => $attributes['no_telepon'],
-            'user_id'     => $user,
+            'user_id'     => $attributes['user_id'],
         ];
         $data = Member::create($data);
         if($data) {

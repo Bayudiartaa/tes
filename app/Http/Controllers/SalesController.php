@@ -7,6 +7,7 @@ use App\Helpers\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\SalesRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UpdateSalesRequest;
 
 class SalesController extends Controller
 {
@@ -27,8 +28,14 @@ class SalesController extends Controller
     {
         $password =  Hash::make('password');
         $nis = 'NIS-'.str_pad(User::max('id')+1, 7, '0', STR_PAD_LEFT);
-        $user = User::findOrFail($id);
-        return view('sales.edit', compact('password', 'nis', 'user'));
+        $sales = User::whereId($id)->first();
+        return view('sales.edit', compact('password', 'nis', 'sales'));
+    }
+
+    public function show($id) 
+    {
+        $user = User::whereId($id)->first();
+        return view('sales.show', compact('user'));
     }
 
     public function store(SalesRequest $request)
@@ -40,34 +47,42 @@ class SalesController extends Controller
             ->result($data);
     }
 
-    public function update(SalesRequest $request, User $user)
+    public function update(UpdateSalesRequest $request, $id)
     {
         $attributes = $request->validated();
-
-        $user->update($attributes);
-        return Response::status('success')
-            ->message('Sales updated')
-            ->result($user);
+        $user = User::find($id);
+        $data =  $user->update($attributes);
+        if($data) {
+            return redirect(route('sales.index'))->with('success', 'Data berhasil ditambahkan');
+        } else {
+            return redirect(route('sales.index'))->with('error', 'Data gagal ditambahkan');
+        }
     }
 
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data Berhasil Di Hapus',
-        ]);
+        return Response::status('success')
+            ->message('Sales Deleted')
+            ->result();
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data Berhasil Di Hapus',
+        // ]);
     }
 
     public function destroyAll(Request $request)
     {
         $sales = User::whereIn('id', $request->get('selected'))->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data Checkbok Berhasil Di Hapus',
-            'data' => $sales
-        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data Checkbok Berhasil Di Hapus',
+        //     'data' => $sales
+        // ]);
+        return Response::status('success')
+        ->message('Data Checkbok Berhasil Di Hapu')
+        ->result();
     }
 }

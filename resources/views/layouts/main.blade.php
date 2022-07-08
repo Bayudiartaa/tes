@@ -11,6 +11,7 @@
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('assets/node_modules/@fortawesome/fontawesome-free/css/all.min.css')}} ">
+    <link rel="stylesheet" href="{{ asset('assets/node_modules/izitoast/dist/css/iziToast.min.css')}} ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('assets/third-party/bootstrap/css/bootstrap.css') }}">
     <!-- Template CSS -->
@@ -61,8 +62,9 @@
 
     <!-- JS Libraies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    
     <script src="{{ asset('TableCheckAll.js') }}"></script>
+    <script src="{{ asset('assets/node_modules/izitoast/dist/js/iziToast.min.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Template JS File -->

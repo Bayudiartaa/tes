@@ -32,9 +32,7 @@
                     </div>
                     <div class="form-group">
                         <label>Alamat Sales</label>
-                        <textarea id="alamat" name ="alamat" rows="10" cols="50" style="height:150px" class="form-control">
-                            {{ old('alamat') }}
-                        </textarea>
+                        <textarea id="alamat" name ="alamat" rows="10" cols="50" style="height:150px" class="form-control">{{ old('alamat') }}</textarea>
                     </div>
                     <div class="form-group">
                         <label>Email Sales</label>
